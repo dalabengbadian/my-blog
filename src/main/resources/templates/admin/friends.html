@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>友链管理-达拉崩吧</title>
+    <link rel="stylesheet" href="../../static/css/semantic.min.css" th:href="@{/css/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/css/me.css}" href="../../static/css/me.css">
+</head>
+<body>
+
+<!--导航-->
+<nav th:replace="admin/admin-common :: menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+</nav>
+
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="#" th:href="@{/admin/friends/input}" class="item">新增</a>
+            <a href="#" th:href="@{/admin/friends}" class="teal active item">列表</a>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+            <i class="close icon"></i>
+            <div class="header">提示：</div>
+            <p th:text="${message}">恭喜，操作成功</p>
+        </div>
+        <input type="hidden" name="pageNumber">
+        <div id="table-container">
+            <table class="ui celled table" th:fragment="friendsList">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>名称</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="friend,stat:${page.records}">
+                    <td th:text="${stat.count}">1</td>
+                    <td th:text="${friend.name}">名称</td>
+                    <td>
+                        <a href="#" th:href="@{/admin/friends/{id}/delete(id=${friend.id})}"
+                           class="ui mini red basic button">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="6">
+                        <div class="ui mini pagination menu" th:if="${page.pages}>1">
+                            <a onclick="page(this)" th:attr="data-page=${page.current}-1" class=" item"
+                               th:if="${page.hasPrevious()}">上一页</a>
+                            <a onclick="page(this)" th:attr="data-page=${page.current}+1" class=" item"
+                               th:if="${page.hasNext()}">下一页</a>
+                        </div>
+                        <a href="#" th:href="@{/admin/friends/input}"
+                           class="ui mini right floated teal basic button">新增</a>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<!--底部footer-->
+<footer th:replace="admin/admin-common :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+</footer>
+
+<script src="../../static/js/jquery-1.7.2.min.js" th:src="@{/js/jquery-1.7.2.min.js}"></script>
+<script src="../../static/js/semantic.min.js" th:src="@{/js/semantic.min.js}"></script>
+
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on: 'hover'
+    });
+    //关闭消息提示
+    $('.message .close') //.message后面有一个空格！！！
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+
+    function page(obj) {
+        $("[name='pageNumber']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    function loaddata() {
+        $("#table-container").load("[[@{/admin/friends/page}]]", {
+            pageNumber: $("[name='pageNumber']").val()
+        });
+    }
+
+</script>
+</body>
+</html>

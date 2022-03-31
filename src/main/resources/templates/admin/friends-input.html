@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>友链新增-达拉崩吧</title>
+  <link rel="stylesheet" href="../../static/css/semantic.min.css" th:href="@{/css/semantic.min.css}">
+  <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}">
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+  <!--导航-->
+  <nav th:replace="admin/admin-common :: menu(4)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  </nav>
+
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a href="#" th:href="@{/admin/friends/input}" class="teal active item">新增</a>
+        <a href="#" th:href="@{/admin/friends}" class="item">列表</a>
+      </div>
+    </div>
+  </div>
+
+  <!--中间内容-->
+  <div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+      <form action="#" method="post" th:action="@{/admin/friends}" class="ui form">
+        <div class="field">
+          <div class="ui left labeled input">
+            <label class="ui teal basic label">名称</label>
+            <input type="text" name="name" placeholder="友链名称">
+          </div>
+          <div class="ui left labeled input">
+            <label class="ui teal basic label">地址</label>
+            <input type="text" name="url" placeholder="url">
+          </div>
+          <div class="ui left labeled input">
+            <label class="ui teal basic label">图标</label>
+            <input type="text" name="picture" placeholder="友链图标">
+          </div>
+          <div class="ui left labeled input">
+            <label class="ui teal basic label">描述</label>
+            <input type="text" name="introduce" placeholder="友链描述">
+          </div>
+        </div>
+
+        <div class="ui error message"></div>
+
+        <div class="ui right aligned container">
+          <button type="button" class="ui button" onclick="window.history.go(-1)" >返回</button>
+          <button class="ui teal submit button">提交</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!--底部footer-->
+  <footer th:replace="admin/admin-common :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+  </footer>
+
+  <script src="../../static/js/jquery-1.7.2.min.js" th:src="@{/js/jquery-1.7.2.min.js}"></script>
+  <script src="../../static/js/semantic.min.js" th:src="@{/js/semantic.min.js}"></script>
+  <script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+  <script>
+
+
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+
+    $('.ui.form').form({
+      fields : {
+        name : {
+          identifier: 'name',
+          rules: [{
+            type : 'empty',
+            prompt: '请输入友链名称'
+          }]
+        },
+        url : {
+          identifier: 'url',
+          rules: [{
+            type : 'empty',
+            prompt: '请输入url'
+          }]
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

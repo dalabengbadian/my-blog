@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: pro
+
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #sql语句及结果的日志输出配置
+  global-config:
+    db-config:
+      table-prefix: t_  #设置数据表前缀，映射实体类时会去掉前缀再匹配类名（MyBatis-Plus默认开启了驼峰命名映射，不需要再设置）
+      id-type: auto   #设置主键赋值规则为自增
+
+#评论的默认头像
+comment.avatar: /image/avatar.jpeg
+#根据qq号获取昵称头像等的接口地址
+qqUrl:
+#第三方图床地址，如本站使用的阿里云对象存储地址，上传图片后只需要在此地址后拼接上图片名即可获取
+pictureSave: https://xxxxxx.oss-cn-beijing.aliyuncs.com/

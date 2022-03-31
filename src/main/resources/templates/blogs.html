@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="author" content="www.yanshisan.cn"/>
+    <meta name="robots" content="all"/>
+    <title>博客列表-达拉崩吧</title>
+    <link rel="stylesheet" th:href="@{/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/master.css}"/>
+    <link rel="stylesheet" th:href="@{/css/gloable.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nprogress.css}"/>
+    <link rel="stylesheet" th:href="@{/css/blog.css}"/>
+</head>
+<body>
+<div class="header">
+</div>
+
+<header th:replace="common::commonheader"></header>
+
+<div class="doc-container" id="doc-container">
+    <div class="container-fixed">
+        <div class="col-content">
+            <div class="inner">
+                <article class="article-list bloglist" id="LAY_bloglist" th:each="blog : ${blogs.records}">
+                    <section class="article-item zoomIn article">
+                        <div class="fc-flag" th:if="${blog.recommend}==true">推荐</div>
+                        <h5 class="title">
+                            <span class="fc-blue">【[[${blog.flag}]]】</span>
+                            <a th:href="@{/read/{id}(id=${blog.id})}" th:text="${blog.title}" target="_blank">标题</a>
+                        </h5>
+                        <div class="time">
+                            <span class="day" th:text="${#dates.format(blog.updateTime,'dd')}">1</span>
+                            <span class="month fs-18" th:text="${#dates.format(blog.updateTime,'MM')}">1<span
+                                    class="fs-14">月</span></span>
+                            <span class="year fs-18 ml10" th:text="${#dates.format(blog.updateTime,'yyyy')}">2022</span>
+                        </div>
+                        <div class="content">
+                            <a th:href="@{/read/{id}(id=${blog.id})}" class="cover img-light" target="_blank">
+                                <img th:src="${blog.firstPicture}">
+                            </a>
+                            [[${blog.description}]]......
+                        </div>
+                        <div class="read-more">
+                            <a th:href="@{/read/{id}(id=${blog.id})}" class="fc-black f-fwb" target="_blank">继续阅读</a>
+                        </div>
+                        <aside class="f-oh footer">
+                            <div class="f-fl tags">
+                                <span class="fa fa-tags fs-16"></span>
+                                <a class="tag" th:text="${blog.type.name}">分类</a>
+                            </div>
+                            <div class="f-fr">
+									<span class="read">               
+										<i class="fa fa-eye fs-16"></i>               
+										<i class="num" th:text="${blog.views}">1</i>
+									</span>
+                            </div>
+                        </aside>
+                    </section>
+                </article>
+
+                <form th:action="@{/blogs}">
+                    <input type="hidden" name="typeId" th:value="${typeId}">
+                    <div style="text-align: center">
+                        <button name="blogsPN" th:if="${blogs.hasPrevious()}" th:value="${blogs.current}-1"
+                                class="layui-btn layui-btn-lg layui-btn-normal">上一页
+                        </button>
+                        <button name="blogsPN"
+                                th:class="${num == blogs.current?'layui-btn layui-btn':'layui-btn layui-btn-sm'}"
+                                th:each="num:${#numbers.sequence(1,blogs.pages)}"
+                                th:value="${num}">[[${num}]]
+                        </button>
+                        <button name="blogsPN" th:if="${blogs.hasNext()}" th:value="${blogs.current}+1"
+                                class="layui-btn layui-btn-lg layui-btn-normal">下一页
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="col-other">
+            <div class="inner">
+                <div class="other-item" id="categoryandsearch">
+                    <form method="post" name="search" th:action="@{/search}" class="search">
+                        <label class="search-wrap">
+                            <input type="text" id="searchtxt" name="query" placeholder="输入关键字搜索" autocomplete="off"/>
+                            <span class="search-icon">
+					                <i onclick="document.forms['search'].submit()" class="fa fa-search"></i>
+					            </span>
+                        </label>
+                    </form>
+                    <h5 class="other-item-title">分类导航</h5>
+                    <ul class="category mt20" id="category">
+                        <li data-index="0" class="slider"></li>
+                        <li data-index="1"><a th:href="@{/blogs}">全部文章([[${count}]])</a></li>
+
+                        <li th:each="type,stat : ${types}" th:attr="data-index=${stat.count}+1">
+                            <a th:href="@{/blogs/{typeId}(typeId=${type.id})}">
+                                [[${type.name}]]([[${type.count}]])
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!--右边悬浮 平板或手机设备显示-->
+                <div class="category-toggle"><i class="layui-icon">&#xe603;</i></div>
+                <div class="article-category">
+                    <div class="article-category-title">分类导航</div>
+                    <a th:href="@{/blogs}">全部文章([[${count}]])</a>
+                    <a th:each="type,stat : ${types}" th:href="@{/blogs/{typeId}(typeId=${type.id})}">[[${type.name}]]([[${type.count}]])</a>
+                    <div class="f-cb"></div>
+                </div>
+                <!--遮罩-->
+                <div class="blog-mask animated layui-hide"></div>
+                <div class="other-item">
+                    <h5 class="other-item-title">热门文章</h5>
+                    <div class="inner">
+                        <ul class="hot-list-article">
+                            <li th:each="hotBlog : ${hotBlogs}"><a th:href="@{/read/{id}(id=${hotBlog.id})}"
+                                                                th:text="${hotBlog.title}" target="_blank"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="other-item">
+                    <h5 class="other-item-title">推荐文章</h5>
+                    <div class="inner">
+                        <ul class="hot-list-article">
+                            <li th:each="recommendBlog : ${recommendBlogs}"><a
+                                    th:href="@{/read/{id}(id=${recommendBlog.id})}"
+                                    th:text="${recommendBlog.title}"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer th:replace="common::commonfooter"></footer>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/yss/gloable.js}"></script>
+<script th:src="@{/js/plugins/nprogress.js}"></script>
+<script>NProgress.start();</script>
+<script th:src="@{/js/yss/article.js}"></script>
+<script>
+    window.onload = function () {
+        NProgress.done();
+    };
+</script>
+
+
+</body>
+</html>

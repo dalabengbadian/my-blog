@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.myblog.mapper.TypeMapper">
+
+    <resultMap id="type" type="com.lh.myblog.bean.Type">
+        <id column="id" property="id"></id>
+        <result column="count(b.id)" property="count"></result>
+    </resultMap>
+
+    <select id="selectAllTypeAndCount" resultMap="type">
+        select t.id id,t.name name,count(b.id)
+        from t_type t left join t_blog b on t.id=b.type_id
+        where published=1
+        group by id,name
+        order by count(b.id) desc
+    </select>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.myblog.mapper.BlogMapper">
+
+    <resultMap id="blog" type="com.lh.myblog.bean.Blog">
+        <id column="id" property="id"></id>
+        <result column="tid" property="type.id"></result>
+        <result column="tname" property="type.name"></result>
+        <result column="nickname" property="user.nickname"></result>
+        <result column="avatar" property="user.avatar"></result>
+    </resultMap>
+
+    <select id="selectPageBlogs" resultMap="blog">
+        select b.id id,title,flag,recommend,update_time,b.type_id,t.id tid,t.name tname
+        from t_blog b left join t_type t on b.type_id=t.id
+        <where>
+            <if test="blog.title != null and blog.title.trim() != ''">
+            <bind name="blogtitle" value="'%'+ blog.title +'%' "/>
+                title like #{blogtitle}
+            </if>
+            <if test="blog.typeId != null">
+                and b.type_id=#{blog.typeId}
+            </if>
+            <if test="blog.recommend == true">
+                and recommend=1
+            </if>
+        </where>
+    </select>
+
+    <select id="selectPageAllBlogs" resultMap="blog">
+        select b.id id,title,content,flag,first_picture,views,recommend,update_time,description,t.id tid,t.name tname
+        from t_blog b left join t_type t on b.type_id=t.id
+        where published=1
+        <if test="typeId != null">
+            and type_id=#{typeId}
+        </if>
+        order by update_time desc
+    </select>
+
+    <select id="selectAllInfoById" resultMap="blog">
+        select b.id id,title,content,flag,first_picture,views,appreciation,share_statement,commentabled,recommend,
+               b.create_time create_time,b.update_time update_time,t.id tid,t.name tname,u.nickname nickname,u.avatar avatar
+        from t_blog b left join t_type t on b.type_id=t.id left join t_user u on b.user_id=u.id
+        where published=1 and b.id=#{id}
+    </select>
+
+    <update id="updateViewsById">
+        update t_blog
+        set views = views + 1
+        where id = #{id}
+    </update>
+
+
+</mapper>

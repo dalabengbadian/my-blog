@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.lh.myblog.mapper.DiaryMapper">
+
+    <select id="selectByYear" resultType="com.lh.myblog.bean.Diary">
+        SELECT *
+        FROM t_diary
+        WHERE YEAR(create_time) = #{year}
+        order by create_time desc
+    </select>
+</mapper>

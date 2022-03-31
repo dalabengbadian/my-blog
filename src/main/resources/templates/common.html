@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<header th:fragment="commonheader" class="gird-header">
+    <div class="header-fixed">
+        <div class="header-inner">
+            <a href="javascript:void(0)" class="header-logo" id="logo">DLBB</a>
+
+            <nav class="nav" id="nav">
+                <ul>
+                    <li><a th:href="@{/index}">首页</a></li>
+                    <li><a th:href="@{/blogs}">博客</a></li>
+                    <li><a th:href="@{/message}">留言</a></li>
+                    <li><a th:href="@{/diary}">日记</a></li>
+                    <li><a th:href="@{/friend}">友链</a></li>
+                    <li><a th:href="@{/about}">关于</a></li>
+                </ul>
+            </nav>
+
+            <a class="phone-menu">
+                <i></i>
+                <i></i>
+                <i></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+
+
+<footer class="grid-footer" th:fragment="commonfooter">
+    <div class="footer-fixed">
+        <div class="copyright">
+            <div class="info">
+                <div class="contact">
+                    <a href="https://github.com/dalabengbadian/my-blog" class="github" target="_blank"><i class="fa fa-github"></i></a>
+                    <a href="http://sighttp.qq.com/authd?IDKEY=f11ff1bce4ca723fcc30aefa49d7a006247df1407cc0aaa0" class="qq" target="_blank" ><i class="fa fa-qq"></i></a>
+                    <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=44_Lh4KPgoGGjYSBgqOSks2AjI4" class="email" target="_blank" ><i class="fa fa-envelope"></i></a>
+                    <a th:href="@{/admin/blogs}" target="_blank" class="weixin"><i class="fa fa-wrench"></i></a>
+                </div>
+                <p class="mt05">
+                    <a style="color:white" href="https://beian.miit.gov.cn/" target="_blank">渝ICP备2022003536号-1</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+</html>
